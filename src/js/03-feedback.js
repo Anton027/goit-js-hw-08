@@ -1,24 +1,14 @@
 import throttle from "lodash.throttle";
 
 const FEEDBACK_KEY = "feedback-email-state";
-// const FEEDBACK_TXT_KEY = "feedback-message-state";
 
-
-
-
-const refs = {
-    form: document.querySelector('.feedback-form'),
-    input: document.querySelector('.feedback-form input'),
-    // message: document.querySelector('.feedback-form textarea')
-}
-
+const form = document.querySelector('.feedback-form');
 
 const formData = {};
-refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(onFormInput, 500));
+form.addEventListener('submit', onFormSubmit);
+form.addEventListener('input', throttle(onFormInput, 500));
 
 populateImput();
-
 
 function onFormSubmit(evt) {
     evt.preventDefault();
@@ -34,44 +24,32 @@ function onFormInput(e) {
     localStorage.setItem(FEEDBACK_KEY, JSON.stringify(formData));
 }
 
-
-// const settings = {
-//   theme: "dark",
-//   isAuthenticated: true,
-//   options: [1, 2, 3],
-// };
-
-// localStorage.setItem("settings", JSON.stringify(settings));
-
-// const savedSettings = localStorage.getItem("settings");
-// const parsedSettings = JSON.parse(savedSettings);
-// console.log(parsedSettings); // settings object
-
-
 function populateImput() {
     const saveImputData = localStorage.getItem(FEEDBACK_KEY);
+
     const parsedData = JSON.parse(saveImputData);
-    console.log(parsedData);
+
     if (parsedData) {
-        
-        refs.input.value = parsedData;
+        form.elements.email = parsedData.email;
+        form.elements.message = parsedData.message;
     }
-}
+};
 
-// function populateTextarea() {
-//     const savedMessage = localStorage.getItem(STORAGE_KEY);
-
-//     if (savedMessage) {
-//         refs.textarea.value = savedMessage;
-//     }
-// }
-// refs.form.addEventListener('input',throttle( e => {
+// refs.form.addEventListener('input', throttle(e => {
 //     // console.log('поле', e.target.name);
 //     // console.log('значення', e.target.value);
 
 //     formData[e.target.name] = e.target.value;
 
-//     console.log(formData);
+//     // console.log(formData);
+//     localStorage.setItem(FEEDBACK_KEY, JSON.stringify(formData));
+
+//     const saveImputData = localStorage.getItem(FEEDBACK_KEY);
+//     const parsedData = JSON.parse(saveImputData);
+    
+//     if (parsedData) {
+//         refs.form.elements.value = parsedData;
+//     }
 
 // }), 500);
 
