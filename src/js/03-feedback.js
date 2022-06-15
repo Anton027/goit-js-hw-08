@@ -2,11 +2,15 @@ import throttle from "lodash.throttle";
 
 const FEEDBACK_KEY = "feedback-email-state";
 
-const form = document.querySelector('.feedback-form');
+const refs = {
+    form: document.querySelector('.feedback-form'),
+    input: document.querySelector('.feedback-form input'),
+    textArea: document.querySelector('.feedback-form textarea')
+}
 
 const formData = {};
-form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', throttle(onFormInput, 500));
+refs.form.addEventListener('submit', onFormSubmit);
+refs.form.addEventListener('input', throttle(onFormInput, 500));
 
 populateImput();
 
@@ -18,38 +22,16 @@ function onFormSubmit(evt) {
 }
 
 function onFormInput(e) {
-    // const message = e.target.value;
     formData[e.target.name] = e.target.value;
-
     localStorage.setItem(FEEDBACK_KEY, JSON.stringify(formData));
 }
 
 function populateImput() {
     const saveImputData = localStorage.getItem(FEEDBACK_KEY);
-
     const parsedData = JSON.parse(saveImputData);
-
     if (parsedData) {
-        form.elements.email = parsedData.email;
-        form.elements.message = parsedData.message;
+        refs.input.value = parsedData.email;
+        refs.textArea.value = parsedData.message;
     }
 };
-
-// refs.form.addEventListener('input', throttle(e => {
-//     // console.log('поле', e.target.name);
-//     // console.log('значення', e.target.value);
-
-//     formData[e.target.name] = e.target.value;
-
-//     // console.log(formData);
-//     localStorage.setItem(FEEDBACK_KEY, JSON.stringify(formData));
-
-//     const saveImputData = localStorage.getItem(FEEDBACK_KEY);
-//     const parsedData = JSON.parse(saveImputData);
-    
-//     if (parsedData) {
-//         refs.form.elements.value = parsedData;
-//     }
-
-// }), 500);
 
